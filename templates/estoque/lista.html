@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Estoque — Sementes do Amanhã{% endblock %}
+
+{% block content %}
+  <h1>Estoque</h1>
+  <p class="lead">Saldo atual dos itens ativos. O saldo é atualizado por doações e entregas.</p>
+
+  {% if itens %}
+    <table>
+      <caption class="sr-only">Itens em estoque</caption>
+      <thead>
+        <tr>
+          <th scope="col">Item</th>
+          <th scope="col">Unidade</th>
+          <th scope="col">Saldo</th>
+          <th scope="col">Situação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in itens %}
+          <tr>
+            <td>{{ item.nome }}</td>
+            <td>{{ item.get_unidade_display }}</td>
+            <td><strong>{{ item.estoque_atual }}</strong></td>
+            <td>
+              {% if item.estoque_atual == 0 %}
+                <span class="pill pill-ambar">Sem saldo</span>
+              {% elif item.estoque_atual <= item.estoque_minimo %}
+                <span class="pill pill-ambar">Abaixo do mínimo</span>
+              {% else %}
+                <span class="pill pill-verde">Disponível</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="painel"><p>Nenhum item ativo cadastrado.</p></div>
+  {% endif %}
+
+  <nav class="nav-inferior" aria-label="Navegação">
+    {% if user.perfil.eh_coordenacao %}
+      <a class="btn btn-primary" href="/estoque/doacoes/nova/">Registrar doação</a>
+    {% endif %}
+    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+  </nav>
+{% endblock %}

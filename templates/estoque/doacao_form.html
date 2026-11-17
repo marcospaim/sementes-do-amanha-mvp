@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Registrar doação — Sementes do Amanhã{% endblock %}
+
+{% block content %}
+  <h1>Registrar doação</h1>
+  <p class="lead">A entrada é somada ao estoque do item escolhido.</p>
+
+  <form method="post" class="form" novalidate>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="alert" role="alert">
+        <span aria-hidden="true">!</span>
+        <div>{% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}</div>
+      </div>
+    {% endif %}
+
+    {% for field in form %}
+      <div class="campo">
+        <label for="{{ field.id_for_label }}">
+          {{ field.label }}{% if field.field.required %} <span class="obrigatorio">· obrigatório</span>{% endif %}
+        </label>
+        {{ field }}
+        {% for error in field.errors %}<div class="erro">{{ error }}</div>{% endfor %}
+      </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary btn-block">Salvar doação</button>
+    <a class="btn btn-secondary btn-block" href="/estoque/" style="margin-top: 10px;">Cancelar</a>
+  </form>
+{% endblock %}
