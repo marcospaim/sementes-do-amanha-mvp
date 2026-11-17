@@ -12,5 +12,6 @@ urlpatterns = [
     path("contas/logout/", LogoutView.as_view(), name="logout"),
     path("familias/", include("familias.urls")),
     path("estoque/", include("estoque.urls")),
+    path("entregas/", include("entregas.urls")),
     path("", include("core.urls")),
 ]

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Entrega registrada — Sementes do Amanhã{% endblock %}
+
+{% block content %}
+  <div class="alerta-sucesso" role="status">
+    <span aria-hidden="true">✓</span>
+    <div>Entrega registrada e sincronizada.</div>
+  </div>
+
+  <h1>Entrega confirmada</h1>
+  <p class="lead">A baixa foi aplicada ao estoque.</p>
+
+  <div class="painel">
+    <div class="linha-painel"><span>Família</span><strong>{{ entrega.familia.codigo }} — {{ entrega.familia.responsavel_nome }}</strong></div>
+    <div class="linha-painel"><span>Item</span><strong>{{ entrega.item.nome }}</strong></div>
+    <div class="linha-painel"><span>Quantidade</span><strong>{{ entrega.quantidade }}</strong></div>
+    <div class="linha-painel"><span>Ciclo</span><strong>{{ entrega.ciclo }}</strong></div>
+    <div class="linha-painel"><span>Registrado por</span><strong>{{ entrega.usuario_registro.get_full_name|default:entrega.usuario_registro.username }}</strong></div>
+  </div>
+
+  <nav class="nav-inferior" aria-label="Navegação">
+    <a class="btn btn-primary" href="/entregas/nova/">Nova entrega</a>
+    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+  </nav>
+{% endblock %}

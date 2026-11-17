@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}Entregas — Sementes do Amanhã{% endblock %}
+
+{% block content %}
+  <h1>Entregas</h1>
+  <p class="lead">Últimos 100 registros.</p>
+
+  {% if entregas %}
+    <table>
+      <caption class="sr-only">Entregas registradas</caption>
+      <thead>
+        <tr>
+          <th scope="col">Família</th>
+          <th scope="col">Item</th>
+          <th scope="col">Qtd.</th>
+          <th scope="col">Ciclo</th>
+          <th scope="col">Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entrega in entregas %}
+          <tr>
+            <td>{{ entrega.familia.codigo }}</td>
+            <td>{{ entrega.item.nome }}</td>
+            <td>{{ entrega.quantidade }}</td>
+            <td>{{ entrega.ciclo }}</td>
+            <td>
+              {% if entrega.sincronizado_em %}
+                <span class="pill pill-verde">✓ Sincronizado</span>
+              {% else %}
+                <span class="pill pill-ambar">◷ Pendente</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="painel"><p>Nenhuma entrega registrada ainda.</p></div>
+  {% endif %}
+
+  <nav class="nav-inferior" aria-label="Navegação">
+    <a class="btn btn-primary" href="/entregas/nova/">Registrar entrega</a>
+    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+  </nav>
+{% endblock %}
