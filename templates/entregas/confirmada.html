@@ -19,7 +19,7 @@
   </div>
 
   <nav class="nav-inferior" aria-label="Navegação">
-    <a class="btn btn-primary" href="/entregas/nova/">Nova entrega</a>
-    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+    <a class="btn btn-primary" href="{% url 'entrega_nova' %}">Nova entrega</a>
+    <a class="btn btn-secondary" href="{% url 'home' %}">Voltar ao início</a>
   </nav>
 {% endblock %}

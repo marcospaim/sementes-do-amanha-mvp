@@ -12,7 +12,7 @@
       <div class="ajuda">A busca não diferencia maiúsculas de minúsculas.</div>
     </div>
     <button class="btn btn-primary" type="submit">Buscar</button>
-    <a class="btn btn-secondary" href="/familias/nova/" style="margin-left: 8px;">Cadastrar família</a>
+    <a class="btn btn-secondary" href="{% url 'familia_nova' %}" style="margin-left: 8px;">Cadastrar família</a>
   </form>
 
   {% if familias %}
@@ -48,11 +48,11 @@
   {% else %}
     <div class="painel">
       <p>Nenhuma família encontrada{% if termo %} para "{{ termo }}"{% endif %}.</p>
-      <a class="btn btn-primary" href="/familias/nova/">Cadastrar a primeira família</a>
+      <a class="btn btn-primary" href="{% url 'familia_nova' %}">Cadastrar a primeira família</a>
     </div>
   {% endif %}
 
   <nav class="nav-inferior" aria-label="Navegação">
-    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+    <a class="btn btn-secondary" href="{% url 'home' %}">Voltar ao início</a>
   </nav>
 {% endblock %}

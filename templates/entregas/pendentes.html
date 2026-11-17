@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Pendentes — Sementes do Amanhã{% endblock %}
 
 {% block content %}
@@ -26,12 +27,12 @@
 
   <nav class="nav-inferior" aria-label="Navegação">
     <button class="btn btn-primary" id="sincronizar-agora" type="button">Sincronizar agora</button>
-    <a class="btn btn-secondary" href="/entregas/nova/">Registrar entrega</a>
-    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+    <a class="btn btn-secondary" href="{% url 'entrega_nova' %}">Registrar entrega</a>
+    <a class="btn btn-secondary" href="{% url 'home' %}">Voltar ao início</a>
   </nav>
 {% endblock %}
 
 {% block scripts %}
-  <script src="/static/js/offline.js" defer></script>
-  <script src="/static/js/pendentes.js" defer></script>
+  <script src="{% static 'js/offline.js' %}" defer></script>
+  <script src="{% static 'js/pendentes.js' %}" defer></script>
 {% endblock %}

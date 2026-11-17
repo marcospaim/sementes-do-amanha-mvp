@@ -40,7 +40,7 @@
   {% endif %}
 
   <nav class="nav-inferior" aria-label="Navegação">
-    <a class="btn btn-primary" href="/entregas/nova/">Registrar entrega</a>
-    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+    <a class="btn btn-primary" href="{% url 'entrega_nova' %}">Registrar entrega</a>
+    <a class="btn btn-secondary" href="{% url 'home' %}">Voltar ao início</a>
   </nav>
 {% endblock %}

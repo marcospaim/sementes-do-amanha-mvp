@@ -17,17 +17,9 @@
       </div>
     {% endif %}
 
-    <div class="campo">
-      <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
-      {{ form.username }}
-      {% for error in form.username.errors %}<div class="erro">{{ error }}</div>{% endfor %}
-    </div>
-
-    <div class="campo">
-      <label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
-      {{ form.password }}
-      {% for error in form.password.errors %}<div class="erro">{{ error }}</div>{% endfor %}
-    </div>
+    {% for field in form %}
+      {% include "partials/campo.html" %}
+    {% endfor %}
 
     <button type="submit" class="btn btn-primary btn-block">Entrar</button>
   </form>

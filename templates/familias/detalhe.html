@@ -43,7 +43,7 @@
   {% endif %}
 
   <nav class="nav-inferior" aria-label="Navegação">
-    <a class="btn btn-primary" href="/entregas/nova/?familia={{ familia.pk }}">Registrar entrega</a>
-    <a class="btn btn-secondary" href="/familias/">Voltar à lista</a>
+    <a class="btn btn-primary" href="{% url 'entrega_nova' %}?familia={{ familia.pk }}">Registrar entrega</a>
+    <a class="btn btn-secondary" href="{% url 'familia_lista' %}">Voltar à lista</a>
   </nav>
 {% endblock %}

@@ -41,8 +41,8 @@
 
   <nav class="nav-inferior" aria-label="Navegação">
     {% if user.perfil.eh_coordenacao %}
-      <a class="btn btn-primary" href="/estoque/doacoes/nova/">Registrar doação</a>
+      <a class="btn btn-primary" href="{% url 'doacao_nova' %}">Registrar doação</a>
     {% endif %}
-    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+    <a class="btn btn-secondary" href="{% url 'home' %}">Voltar ao início</a>
   </nav>
 {% endblock %}

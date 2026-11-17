@@ -99,12 +99,17 @@ Acesse http://127.0.0.1:8000/ e entre com um dos usuários de demonstração:
 ## Segurança
 
 - Senhas com PBKDF2 (`pbkdf2_sha256`) do Django; nunca em texto limpo.
-- Sessão com cookie `HttpOnly`, `SameSite=Lax` e `Secure` em produção.
+- Sessão com cookie `HttpOnly`, `SameSite=Lax`, `Secure` em produção e expiração
+  deslizante de 8 horas (`SESSION_SAVE_EVERY_REQUEST`).
 - HTTPS, HSTS e `DEBUG=False` obrigatórios em produção (`config/settings.py`).
 - Autorização por operação: `coordenacao_required` nega por padrão.
 - Bloqueio temporário de login após 5 tentativas inválidas.
-- ORM parametrizado, validação no servidor, escape de saída e CSP previsto.
+- CSP (`script-src 'self'`), `Permissions-Policy`, `COOP` e `X-Frame-Options`,
+  aplicados por `core/middleware.py` (o admin fica fora da CSP estrita).
+- ORM parametrizado, validação no servidor e escape de saída dos templates.
 - Segredos em variáveis de ambiente (`.env` fora do versionamento).
+- Proxy reverso: `USE_X_FORWARDED_PROTO` e `CSRF_TRUSTED_ORIGINS` documentados
+  em `.env.example`.
 
 ## Testes e qualidade
 
@@ -115,7 +120,7 @@ python manage.py check
 pytest
 ```
 
-Cobertura atual: **60 testes** (modelos, validações, serviços, views, API,
+Cobertura atual: **65 testes** (modelos, validações, serviços, views, API,
 segurança, painel/relatório, PWA e acessibilidade). O CI executa os mesmos
 passos em cada push e Pull Request.
 
