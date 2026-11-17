@@ -1,30 +1,70 @@
-{% load static %}<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sementes do Amanhã</title>
-  <style>
-    :root { color-scheme: light; }
-    body {
-      margin: 0; min-height: 100vh; display: grid; place-items: center;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #eef7f1; color: #111827;
-    }
-    main {
-      background: #fff; border: 1px solid #d1d5db; border-radius: 16px;
-      padding: 32px; max-width: 520px; margin: 24px;
-    }
-    h1 { color: #14532d; margin: 0 0 8px; font-size: 24px; }
-    p { color: #4b5563; line-height: 1.5; }
-    a { color: #1b6b3a; font-weight: 700; }
-  </style>
-</head>
-<body>
-  <main>
-    <h1>Instituto Sementes do Amanhã</h1>
-    <p>Sistema de gestão de doações e entregas — MVP em desenvolvimento.</p>
-    <p><a href="/health/">Verificação de disponibilidade</a></p>
-  </main>
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}Início — Sementes do Amanhã{% endblock %}
+
+{% block content %}
+  <h1>Olá, {{ user.get_full_name|default:user.username }}</h1>
+  <p class="lead">Registre as entregas do ciclo atual, mesmo sem internet.</p>
+
+  <div class="cards">
+    <a class="card primary" href="/entregas/nova/">
+      <span class="card-icon" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+      </span>
+      <span>
+        <span class="card-title">Registrar entrega</span>
+        <span class="card-sub">Cesta entregue no pátio, mesmo sem internet</span>
+      </span>
+      <span class="chev" aria-hidden="true">›</span>
+    </a>
+
+    <a class="card" href="/familias/nova/">
+      <span class="card-icon" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/></svg>
+      </span>
+      <span>
+        <span class="card-title">Cadastrar família</span>
+        <span class="card-sub">Cadastro único com código FAM-0000</span>
+      </span>
+      <span class="chev" aria-hidden="true">›</span>
+    </a>
+
+    <a class="card" href="/familias/">
+      <span class="card-icon" aria-hidden="true">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </span>
+      <span>
+        <span class="card-title">Consultar famílias</span>
+        <span class="card-sub">Buscar por código ou nome do responsável</span>
+      </span>
+      <span class="chev" aria-hidden="true">›</span>
+    </a>
+
+    {% if user.perfil.eh_coordenacao %}
+      <a class="card" href="/estoque/doacoes/nova/">
+        <span class="card-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        </span>
+        <span>
+          <span class="card-title">Registrar doação</span>
+          <span class="card-sub">Entrada de itens no estoque</span>
+        </span>
+        <span class="chev" aria-hidden="true">›</span>
+      </a>
+
+      <a class="card" href="/painel/">
+        <span class="card-icon" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+        </span>
+        <span>
+          <span class="card-title">Painel e relatório</span>
+          <span class="card-sub">Totais do ciclo e prestação de contas</span>
+        </span>
+        <span class="chev" aria-hidden="true">›</span>
+      </a>
+    {% endif %}
+  </div>
+
+  <p class="lead" style="margin-top: 24px; font-size: 13px;">
+    O painel e o relatório estão disponíveis apenas para a coordenação.
+  </p>
+{% endblock %}

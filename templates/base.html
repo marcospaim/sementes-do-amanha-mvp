@@ -1,0 +1,46 @@
+{% load static %}<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Sementes do Amanhã{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/app.css' %}">
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <a class="skip" href="#conteudo">Ir para o conteúdo</a>
+
+  <header class="app-header">
+    <div class="logo" aria-hidden="true">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C12 7 8 5 4 5c0 5 3 7 8 7Z"/><path d="M12 12c0-4 3-6 8-6 0 5-4 6-8 6Z"/></svg>
+    </div>
+    <div>
+      <div class="brand-title">Instituto Sementes do Amanhã</div>
+      <div class="brand-sub">Gestão de doações e entregas</div>
+    </div>
+  </header>
+
+  {% if user.is_authenticated %}
+    <div class="session">
+      <span>Sessão iniciada · {{ user.get_full_name|default:user.username }} · Perfil: {{ user.perfil.get_papel_display }}</span>
+      <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Sair</button>
+      </form>
+    </div>
+  {% endif %}
+
+  <main id="conteudo" class="container">
+    {% if messages %}
+      {% for message in messages %}
+        <div role="status" class="{% if message.tags == 'error' %}alert{% else %}alerta-sucesso{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  {% block scripts %}{% endblock %}
+</body>
+</html>
