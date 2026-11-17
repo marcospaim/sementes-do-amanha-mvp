@@ -36,6 +36,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "core.middleware.CabecalhosDeSegurancaMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -127,4 +128,15 @@ if not DEBUG:
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = "Lax"
 CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_AGE = 8 * 60 * 60
+SESSION_SAVE_EVERY_REQUEST = True
 X_FRAME_OPTIONS = "DENY"
+
+if os.environ.get("USE_X_FORWARDED_PROTO", "False").lower() in {"1", "true", "yes"}:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+
+CSRF_TRUSTED_ORIGINS = [
+    origem.strip()
+    for origem in os.environ.get("CSRF_TRUSTED_ORIGINS", "").split(",")
+    if origem.strip()
+]

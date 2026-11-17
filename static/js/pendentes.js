@@ -6,36 +6,58 @@
   const resumo = document.getElementById("resumo-pendentes");
   const botao = document.getElementById("sincronizar-agora");
 
-  function rotulo(status) {
-    if (status === "rejeitado") {
-      return "<span class='pill pill-ambar'>! Rejeitado</span>";
+  function criarCelula(texto) {
+    const td = document.createElement("td");
+    td.textContent = texto;
+    return td;
+  }
+
+  function criarRotulo(status) {
+    const span = document.createElement("span");
+    span.className = "pill pill-ambar";
+    span.textContent = status === "rejeitado" ? "! Rejeitado" : "◷ Pendente";
+    return span;
+  }
+
+  function linhaVazia(texto) {
+    const tr = document.createElement("tr");
+    const td = criarCelula(texto);
+    td.colSpan = 4;
+    tr.appendChild(td);
+    return tr;
+  }
+
+  function preencherTabela(itens) {
+    lista.textContent = "";
+    if (itens.length === 0) {
+      lista.appendChild(linhaVazia("Nenhum registro pendente no aparelho."));
+      return;
     }
-    return "<span class='pill pill-ambar'>◷ Pendente</span>";
+    itens.forEach(function (item) {
+      const tr = document.createElement("tr");
+      tr.appendChild(criarCelula(item.familia_codigo));
+      tr.appendChild(criarCelula(String(item.quantidade)));
+      tr.appendChild(criarCelula(item.ciclo));
+      const tdEstado = document.createElement("td");
+      tdEstado.appendChild(criarRotulo(item.status));
+      if (item.motivo) {
+        tdEstado.appendChild(document.createTextNode(" — " + item.motivo));
+      }
+      tr.appendChild(tdEstado);
+      lista.appendChild(tr);
+    });
   }
 
   async function renderizar() {
-    if (!window.FilaEntregas) return;
+    if (!window.FilaEntregas || !lista) return;
     const itens = await window.FilaEntregas.fila.todos();
-    if (!lista) return;
-
-    if (itens.length === 0) {
-      lista.innerHTML = "<tr><td colspan='4'>Nenhum registro pendente no aparelho.</td></tr>";
-      if (resumo) resumo.textContent = "Nenhum registro pendente.";
-      return;
+    preencherTabela(itens);
+    if (resumo) {
+      resumo.textContent =
+        itens.length === 0
+          ? "Nenhum registro pendente."
+          : `${itens.length} registro(s) no aparelho.`;
     }
-
-    lista.innerHTML = itens
-      .map(
-        (i) =>
-          "<tr>" +
-          `<td>${i.familia_codigo}</td>` +
-          `<td>${i.quantidade}</td>` +
-          `<td>${i.ciclo}</td>` +
-          `<td>${rotulo(i.status)}${i.motivo ? " — " + i.motivo : ""}</td>` +
-          "</tr>"
-      )
-      .join("");
-    if (resumo) resumo.textContent = `${itens.length} registro(s) no aparelho.`;
   }
 
   if (botao) {

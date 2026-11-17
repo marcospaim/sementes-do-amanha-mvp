@@ -130,9 +130,23 @@
       const container = document.createElement("div");
       container.className = "alerta-sucesso";
       container.setAttribute("role", "status");
-      container.innerHTML =
-        "<span aria-hidden='true'>✓</span><div><strong>Entrega salva no aparelho.</strong> " +
-        "Aguardando sincronização. <a href='/entregas/pendentes/'>Ver pendentes</a></div>";
+
+      const icone = document.createElement("span");
+      icone.setAttribute("aria-hidden", "true");
+      icone.textContent = "✓";
+
+      const texto = document.createElement("div");
+      const forte = document.createElement("strong");
+      forte.textContent = "Entrega salva no aparelho. ";
+      texto.appendChild(forte);
+      texto.appendChild(document.createTextNode("Aguardando sincronização. "));
+      const link = document.createElement("a");
+      link.href = "/entregas/pendentes/";
+      link.textContent = "Ver pendentes";
+      texto.appendChild(link);
+
+      container.appendChild(icone);
+      container.appendChild(texto);
       form.parentNode.insertBefore(container, form);
       form.reset();
       atualizarAviso();

@@ -45,12 +45,6 @@
 
   {% block scripts %}{% endblock %}
 
-  <script>
-    if ("serviceWorker" in navigator) {
-      window.addEventListener("load", function () {
-        navigator.serviceWorker.register("/sw.js");
-      });
-    }
-  </script>
+  <script src="{% static 'js/sw-register.js' %}" defer></script>
 </body>
 </html>

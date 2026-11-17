@@ -16,16 +16,10 @@
     {% endif %}
 
     {% for field in form %}
-      <div class="campo">
-        <label for="{{ field.id_for_label }}">
-          {{ field.label }}{% if field.field.required %} <span class="obrigatorio">· obrigatório</span>{% endif %}
-        </label>
-        {{ field }}
-        {% for error in field.errors %}<div class="erro">{{ error }}</div>{% endfor %}
-      </div>
+      {% include "partials/campo.html" %}
     {% endfor %}
 
     <button type="submit" class="btn btn-primary btn-block">Salvar doação</button>
-    <a class="btn btn-secondary btn-block" href="/estoque/" style="margin-top: 10px;">Cancelar</a>
+    <a class="btn btn-secondary btn-block" href="{% url 'estoque_lista' %}" style="margin-top: 10px;">Cancelar</a>
   </form>
 {% endblock %}

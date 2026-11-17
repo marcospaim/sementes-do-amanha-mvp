@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Registrar entrega — Sementes do Amanhã{% endblock %}
 
 {% block content %}
@@ -11,7 +12,7 @@
   </div>
 
   <form method="post" class="form" id="form-entrega" novalidate
-        data-sync-url="/api/entregas/sincronizar/">
+        data-sync-url="{% url 'entrega_sync' %}">
     {% csrf_token %}
     {{ familias_codigos|json_script:"familias-codigos" }}
 
@@ -23,21 +24,14 @@
     {% endif %}
 
     {% for field in form %}
-      <div class="campo">
-        <label for="{{ field.id_for_label }}">
-          {{ field.label }}{% if field.field.required %} <span class="obrigatorio">· obrigatório</span>{% endif %}
-        </label>
-        {{ field }}
-        {% if field.help_text %}<div class="ajuda">{{ field.help_text }}</div>{% endif %}
-        {% for error in field.errors %}<div class="erro">{{ error }}</div>{% endfor %}
-      </div>
+      {% include "partials/campo.html" %}
     {% endfor %}
 
     <button type="submit" class="btn btn-primary btn-block" id="botao-salvar">Salvar entrega</button>
-    <a class="btn btn-secondary btn-block" href="/" style="margin-top: 10px;">Cancelar</a>
+    <a class="btn btn-secondary btn-block" href="{% url 'home' %}" style="margin-top: 10px;">Cancelar</a>
   </form>
 {% endblock %}
 
 {% block scripts %}
-  <script src="/static/js/offline.js" defer></script>
+  <script src="{% static 'js/offline.js' %}" defer></script>
 {% endblock %}

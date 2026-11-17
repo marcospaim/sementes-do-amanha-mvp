@@ -63,6 +63,6 @@
   <nav class="nav-inferior" aria-label="Exportação e navegação">
     <a class="btn btn-primary" href="{% url 'relatorio_pdf' %}?ciclo={{ ciclo }}">Baixar relatório PDF</a>
     <a class="btn btn-secondary" href="{% url 'relatorio_csv' %}?ciclo={{ ciclo }}">Exportar CSV</a>
-    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+    <a class="btn btn-secondary" href="{% url 'home' %}">Voltar ao início</a>
   </nav>
 {% endblock %}
