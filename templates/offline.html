@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Sem conexão — Sementes do Amanhã{% endblock %}
+
+{% block content %}
+  <h1>Sem conexão</h1>
+  <p class="lead">Você está offline. As páginas já visitadas continuam disponíveis.</p>
+
+  <div class="alerta-sucesso" role="status">
+    <span aria-hidden="true">↻</span>
+    <div>As entregas salvas no aparelho serão enviadas automaticamente quando a internet voltar.</div>
+  </div>
+
+  <nav class="nav-inferior" aria-label="Navegação">
+    <a class="btn btn-primary" href="/entregas/nova/">Registrar entrega</a>
+    <a class="btn btn-secondary" href="/entregas/pendentes/">Ver pendentes</a>
+  </nav>
+{% endblock %}

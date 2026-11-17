@@ -1,9 +1,18 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
 
+from familias.models import Familia
+
 from .forms import EntregaForm
 from .models import Entrega
 from .services import DuplicidadeError, EstoqueInsuficienteError, registrar_entrega
+
+
+def _familias_codigos():
+    return {
+        str(pk): codigo
+        for pk, codigo in Familia.objects.filter(ativo=True).values_list("pk", "codigo")
+    }
 
 
 @login_required
@@ -31,7 +40,11 @@ def nova(request):
     else:
         form = EntregaForm(initial=dados_iniciais)
 
-    return render(request, "entregas/form.html", {"form": form})
+    return render(
+        request,
+        "entregas/form.html",
+        {"form": form, "familias_codigos": _familias_codigos()},
+    )
 
 
 @login_required
@@ -44,3 +57,8 @@ def confirmada(request, pk):
 def lista(request):
     entregas = Entrega.objects.select_related("familia", "item").all()[:100]
     return render(request, "entregas/lista.html", {"entregas": entregas})
+
+
+@login_required
+def pendentes(request):
+    return render(request, "entregas/pendentes.html")

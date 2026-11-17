@@ -1,0 +1,12 @@
+{
+  "name": "Sementes do Amanhã — Doações e Entregas",
+  "short_name": "Sementes",
+  "description": "Controle de famílias, doações e entregas do Instituto Sementes do Amanhã.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#14532d",
+  "lang": "pt-BR",
+  "icons": []
+}

@@ -13,6 +13,7 @@
   <form method="post" class="form" id="form-entrega" novalidate
         data-sync-url="/api/entregas/sincronizar/">
     {% csrf_token %}
+    {{ familias_codigos|json_script:"familias-codigos" }}
 
     {% if form.non_field_errors %}
       <div class="alert" role="alert" id="erro-formulario">

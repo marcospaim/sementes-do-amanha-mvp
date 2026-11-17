@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Pendentes — Sementes do Amanhã{% endblock %}
+
+{% block content %}
+  <h1>Pendentes de sincronização</h1>
+  <p class="lead">Registros salvos neste aparelho que ainda não chegaram ao servidor.</p>
+
+  <p id="resumo-pendentes" role="status">Carregando registros...</p>
+
+  <table>
+    <caption class="sr-only">Entregas pendentes no aparelho</caption>
+    <thead>
+      <tr>
+        <th scope="col">Família</th>
+        <th scope="col">Qtd.</th>
+        <th scope="col">Ciclo</th>
+        <th scope="col">Estado</th>
+      </tr>
+    </thead>
+    <tbody id="lista-pendentes">
+      <tr><td colspan="4">Carregando...</td></tr>
+    </tbody>
+  </table>
+
+  <p id="resultado-sync" class="lead" role="status"></p>
+
+  <nav class="nav-inferior" aria-label="Navegação">
+    <button class="btn btn-primary" id="sincronizar-agora" type="button">Sincronizar agora</button>
+    <a class="btn btn-secondary" href="/entregas/nova/">Registrar entrega</a>
+    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+  </nav>
+{% endblock %}
+
+{% block scripts %}
+  <script src="/static/js/offline.js" defer></script>
+  <script src="/static/js/pendentes.js" defer></script>
+{% endblock %}

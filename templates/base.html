@@ -4,6 +4,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Sementes do Amanhã{% endblock %}</title>
+  <link rel="manifest" href="{% static 'manifest.webmanifest' %}">
+  <meta name="theme-color" content="#14532d">
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
   {% block head %}{% endblock %}
 </head>
@@ -42,5 +44,13 @@
   </main>
 
   {% block scripts %}{% endblock %}
+
+  <script>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", function () {
+        navigator.serviceWorker.register("/sw.js");
+      });
+    }
+  </script>
 </body>
 </html>
