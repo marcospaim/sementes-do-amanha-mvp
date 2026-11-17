@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% block title %}Painel — Sementes do Amanhã{% endblock %}
+
+{% block content %}
+  <h1>Painel do ciclo {{ ciclo }}</h1>
+  <p class="lead">Totais consolidados a partir das entregas registradas.</p>
+
+  <form method="get" class="form" style="margin-bottom: 18px;">
+    <div class="campo" style="margin-bottom: 10px;">
+      <label for="ciclo">Ciclo (AAAA-MM)</label>
+      <input id="ciclo" name="ciclo" value="{{ ciclo }}" inputmode="numeric" placeholder="2026-11">
+    </div>
+    <button class="btn btn-primary" type="submit">Consultar</button>
+  </form>
+
+  <div class="painel" style="margin-bottom: 18px;">
+    <div class="linha-painel">
+      <span>Famílias atendidas</span>
+      <strong class="valor">{{ familias_atendidas }}</strong>
+    </div>
+    <div class="linha-painel">
+      <span>Total de cestas entregues</span>
+      <strong class="valor">{{ total_cestas }}</strong>
+    </div>
+  </div>
+
+  <h2>Estoque atual</h2>
+  {% if itens %}
+    <table>
+      <thead><tr><th scope="col">Item</th><th scope="col">Saldo</th></tr></thead>
+      <tbody>
+        {% for item in itens %}
+          <tr><td>{{ item.nome }}</td><td><strong>{{ item.estoque_atual }}</strong> {{ item.get_unidade_display }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Nenhum item ativo.</p>
+  {% endif %}
+
+  <h2>Entregas do ciclo</h2>
+  {% if entregas %}
+    <table>
+      <thead>
+        <tr><th scope="col">Família</th><th scope="col">Responsável</th><th scope="col">Item</th><th scope="col">Qtd.</th><th scope="col">Data</th></tr>
+      </thead>
+      <tbody>
+        {% for entrega in entregas %}
+          <tr>
+            <td>{{ entrega.familia.codigo }}</td>
+            <td>{{ entrega.familia.responsavel_nome }}</td>
+            <td>{{ entrega.item.nome }}</td>
+            <td>{{ entrega.quantidade }}</td>
+            <td>{{ entrega.data|date:"d/m/Y H:i" }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="painel"><p>Nenhuma entrega registrada neste ciclo.</p></div>
+  {% endif %}
+
+  <nav class="nav-inferior" aria-label="Exportação e navegação">
+    <a class="btn btn-primary" href="{% url 'relatorio_pdf' %}?ciclo={{ ciclo }}">Baixar relatório PDF</a>
+    <a class="btn btn-secondary" href="{% url 'relatorio_csv' %}?ciclo={{ ciclo }}">Exportar CSV</a>
+    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+  </nav>
+{% endblock %}
