@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block title %}{{ familia.codigo }} — Sementes do Amanhã{% endblock %}
+
+{% block content %}
+  <h1>{{ familia.codigo }} — {{ familia.responsavel_nome }}</h1>
+  <p class="lead">Família cadastrada em {{ familia.criado_em|date:"d/m/Y" }}.</p>
+
+  <div class="painel">
+    <div class="linha-painel">
+      <span>Endereço</span>
+      <strong>{{ familia.endereco }}</strong>
+    </div>
+    <div class="linha-painel">
+      <span>Quantidade de membros</span>
+      <strong>{{ familia.qtd_membros }}</strong>
+    </div>
+    {% if pode_ver_contato %}
+      <div class="linha-painel">
+        <span>Telefone</span>
+        <strong>{{ familia.telefone|default:"—" }}</strong>
+      </div>
+    {% endif %}
+    <div class="linha-painel">
+      <span>Situação</span>
+      <strong>{% if familia.ativo %}Ativa{% else %}Inativa{% endif %}</strong>
+    </div>
+  </div>
+
+  <h2>Entregas registradas</h2>
+  {% if familia.entregas.all %}
+    <table>
+      <thead>
+        <tr><th scope="col">Ciclo</th><th scope="col">Item</th><th scope="col">Quantidade</th></tr>
+      </thead>
+      <tbody>
+        {% for entrega in familia.entregas.all %}
+          <tr><td>{{ entrega.ciclo }}</td><td>{{ entrega.item.nome }}</td><td>{{ entrega.quantidade }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>Nenhuma entrega registrada para esta família.</p>
+  {% endif %}
+
+  <nav class="nav-inferior" aria-label="Navegação">
+    <a class="btn btn-primary" href="/entregas/nova/?familia={{ familia.pk }}">Registrar entrega</a>
+    <a class="btn btn-secondary" href="/familias/">Voltar à lista</a>
+  </nav>
+{% endblock %}

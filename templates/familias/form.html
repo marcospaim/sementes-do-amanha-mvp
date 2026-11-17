@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Cadastrar família — Sementes do Amanhã{% endblock %}
+
+{% block content %}
+  <h1>Cadastrar família</h1>
+  <p class="lead">Cada família deve ser cadastrada uma única vez. O código é o identificador único.</p>
+
+  <form method="post" class="form" novalidate>
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+      <div class="alert" role="alert">
+        <span aria-hidden="true">!</span>
+        <div>
+          {% for error in form.non_field_errors %}<div>{{ error }}</div>{% endfor %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% for field in form %}
+      <div class="campo">
+        <label for="{{ field.id_for_label }}">
+          {{ field.label }}{% if field.field.required %} <span class="obrigatorio">· obrigatório</span>{% endif %}
+        </label>
+        {{ field }}
+        {% if field.help_text %}<div class="ajuda">{{ field.help_text }}</div>{% endif %}
+        {% for error in field.errors %}<div class="erro">{{ error }}</div>{% endfor %}
+      </div>
+    {% endfor %}
+
+    <button type="submit" class="btn btn-primary btn-block">Salvar família</button>
+    <a class="btn btn-secondary btn-block" href="/familias/" style="margin-top: 10px;">Cancelar</a>
+  </form>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Famílias — Sementes do Amanhã{% endblock %}
+
+{% block content %}
+  <h1>Famílias</h1>
+  <p class="lead">Cadastro único dos beneficiários. Busque por código ou nome do responsável.</p>
+
+  <form method="get" class="form" role="search" style="margin-bottom: 18px;">
+    <div class="campo" style="margin-bottom: 12px;">
+      <label for="q">Buscar família</label>
+      <input id="q" name="q" type="search" value="{{ termo }}" placeholder="FAM-0042 ou Maria">
+      <div class="ajuda">A busca não diferencia maiúsculas de minúsculas.</div>
+    </div>
+    <button class="btn btn-primary" type="submit">Buscar</button>
+    <a class="btn btn-secondary" href="/familias/nova/" style="margin-left: 8px;">Cadastrar família</a>
+  </form>
+
+  {% if familias %}
+    <table>
+      <caption class="sr-only">Famílias cadastradas</caption>
+      <thead>
+        <tr>
+          <th scope="col">Código</th>
+          <th scope="col">Responsável</th>
+          <th scope="col">Membros</th>
+          {% if pode_ver_contato %}<th scope="col">Telefone</th>{% endif %}
+          <th scope="col">Situação</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for familia in familias %}
+          <tr>
+            <td><a href="{% url 'familia_detalhe' familia.pk %}">{{ familia.codigo }}</a></td>
+            <td>{{ familia.responsavel_nome }}</td>
+            <td>{{ familia.qtd_membros }}</td>
+            {% if pode_ver_contato %}<td>{{ familia.telefone|default:"—" }}</td>{% endif %}
+            <td>
+              {% if familia.ativo %}
+                <span class="pill pill-verde">Ativa</span>
+              {% else %}
+                <span class="pill pill-ambar">Inativa</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <div class="painel">
+      <p>Nenhuma família encontrada{% if termo %} para "{{ termo }}"{% endif %}.</p>
+      <a class="btn btn-primary" href="/familias/nova/">Cadastrar a primeira família</a>
+    </div>
+  {% endif %}
+
+  <nav class="nav-inferior" aria-label="Navegação">
+    <a class="btn btn-secondary" href="/">Voltar ao início</a>
+  </nav>
+{% endblock %}

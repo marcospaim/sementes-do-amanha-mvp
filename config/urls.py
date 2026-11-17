@@ -10,5 +10,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("contas/login/", LoginComBloqueioView.as_view(), name="login"),
     path("contas/logout/", LogoutView.as_view(), name="logout"),
+    path("familias/", include("familias.urls")),
     path("", include("core.urls")),
 ]
