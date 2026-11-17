@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Protótipo — Instituto Sementes do Amanhã</title>
+<style>
+  :root{
+    --green-800:#0f3d24;
+    --green-700:#14532d;
+    --green-600:#1b6b3a;
+    --green-100:#d9efe1;
+    --green-50:#eef7f1;
+    --ink:#111827;
+    --muted:#4b5563;
+    --line:#d1d5db;
+    --white:#ffffff;
+    --amber-bg:#fef3c7;
+    --amber-border:#92400e;
+    --amber-ink:#78350f;
+    --red-bg:#fee2e2;
+    --red-border:#991b1b;
+    --red-ink:#7f1d1d;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:#e5e7eb;
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{
+    display:flex;
+    flex-wrap:wrap;
+    gap:40px;
+    padding:40px;
+    align-items:flex-start;
+    justify-content:center;
+  }
+  .frame{display:flex;flex-direction:column;gap:8px;}
+  .frame > figcaption{
+    font:600 13px/1.3 inherit;
+    color:#374151;
+    letter-spacing:.02em;
+  }
+  .phone{
+    width:390px;
+    height:844px;
+    background:var(--white);
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    position:relative;
+    border:1px solid #cbd5e1;
+  }
+  .app-header{
+    padding:16px 20px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    gap:12px;
+    background:var(--white);
+    flex:0 0 auto;
+  }
+  .logo{
+    width:40px;height:40px;border-radius:10px;
+    background:var(--green-50);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--green-700);
+    flex:0 0 auto;
+  }
+  .brand-title{font-size:14px;font-weight:700;line-height:1.2;color:var(--green-800);}
+  .brand-sub{font-size:12px;color:var(--muted);margin-top:2px;}
+  .back{
+    width:48px;height:48px;margin-left:-12px;
+    display:flex;align-items:center;justify-content:center;
+    color:var(--green-700);text-decoration:none;
+    font-size:26px;line-height:1;
+    border-radius:12px;
+  }
+  .screen-title{font-size:17px;font-weight:700;color:var(--green-800);}
+  .session{
+    display:flex;align-items:center;gap:8px;
+    padding:10px 20px;font-size:12.5px;color:var(--muted);
+    background:var(--green-50);border-bottom:1px solid var(--green-100);
+    flex:0 0 auto;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:#15803d;flex:0 0 auto;}
+  .session .link{margin-left:auto;color:var(--green-700);font-weight:700;text-decoration:none;padding:8px;border-radius:8px;}
+  main{padding:20px;flex:1 1 auto;overflow:hidden;}
+  h1{font-size:24px;line-height:1.2;margin:0 0 6px;color:var(--green-800);}
+  .lead{margin:0 0 20px;color:var(--muted);font-size:14px;line-height:1.4;}
+  .card{
+    display:flex;align-items:center;gap:14px;
+    border:1.5px solid var(--line);border-radius:14px;
+    padding:16px;margin-bottom:12px;text-decoration:none;color:inherit;
+    min-height:78px;background:var(--white);
+  }
+  .card.primary{
+    background:var(--green-600);
+    border-color:var(--green-600);
+    color:var(--white);
+    min-height:92px;
+    box-shadow:0 2px 0 #0f3d24;
+  }
+  .card-icon{
+    width:44px;height:44px;border-radius:12px;
+    background:var(--green-50);color:var(--green-700);
+    display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  }
+  .card.primary .card-icon{background:rgba(255,255,255,.16);color:#fff;}
+  .card-text{display:flex;flex-direction:column;gap:3px;min-width:0;}
+  .card-title{font-size:16px;font-weight:700;line-height:1.2;}
+  .card-sub{font-size:13px;line-height:1.3;color:var(--muted);}
+  .card.primary .card-sub{color:#e7f5ec;}
+  .chev{margin-left:auto;font-size:24px;color:var(--muted);line-height:1;}
+  .card.primary .chev{color:#fff;}
+  .pill{
+    display:inline-flex;align-items:center;gap:5px;
+    font-size:12px;font-weight:700;border-radius:999px;padding:4px 10px;
+    border:1.5px solid transparent;white-space:nowrap;
+  }
+  .pill.amber{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber-ink);}
+  .pill.green{background:var(--green-50);border-color:var(--green-600);color:var(--green-700);}
+  .note{font-size:12px;color:var(--muted);line-height:1.4;margin:14px 0 0;}
+  .nav{
+    flex:0 0 auto;border-top:1px solid var(--line);
+    display:flex;justify-content:space-around;align-items:center;
+    padding:8px 12px;background:var(--white);
+  }
+  .nav a{
+    display:flex;flex-direction:column;align-items:center;gap:4px;
+    text-decoration:none;color:var(--muted);font-size:11px;font-weight:600;
+    min-width:96px;min-height:48px;justify-content:center;border-radius:10px;
+  }
+  .nav a[aria-current="page"]{color:var(--green-700);}
+  .banner{
+    display:flex;align-items:flex-start;gap:10px;
+    margin:0 20px 4px;padding:12px 14px;border-radius:12px;
+    background:var(--amber-bg);border:1.5px solid var(--amber-border);
+    color:var(--amber-ink);font-size:13px;line-height:1.35;
+  }
+  .banner strong{display:block;font-size:13.5px;}
+  .banner .b-sub{font-weight:400;}
+  .form{padding:16px 20px 0;}
+  label{display:block;font-size:13.5px;font-weight:700;color:#1f2937;margin:0 0 6px;}
+  .req{font-weight:400;color:var(--muted);}
+  .input, .select, .stepper{
+    width:100%;min-height:50px;border:1.5px solid #6b7280;border-radius:12px;
+    background:var(--white);font-size:16px;color:var(--ink);
+    padding:0 14px;display:flex;align-items:center;
+  }
+  .input{outline:none;}
+  .input::placeholder{color:#6b7280;}
+  .field{margin-bottom:16px;}
+  .search-row{position:relative;}
+  .search-row .input{padding-left:44px;}
+  .search-row svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:#4b5563;}
+  .result{
+    display:flex;align-items:center;gap:12px;
+    border:1.5px solid var(--green-600);background:var(--green-50);
+    border-radius:12px;padding:12px 14px;margin-top:8px;
+  }
+  .result .r-name{font-size:15px;font-weight:700;color:var(--green-800);}
+  .result .r-meta{font-size:12.5px;color:var(--muted);margin-top:2px;}
+  .result .r-check{margin-left:auto;color:var(--green-700);}
+  select.select{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23111827' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");background-repeat:no-repeat;background-position:right 14px center;}
+  .stepper{padding:0;justify-content:space-between;overflow:hidden;}
+  .stepper button{
+    width:56px;min-height:50px;border:0;background:#f3f4f6;
+    font-size:24px;color:var(--green-800);cursor:pointer;
+  }
+  .stepper .qty{font-size:18px;font-weight:700;}
+  .hint{font-size:12.5px;color:var(--muted);margin:-8px 0 18px;line-height:1.4;}
+  .footer{
+    flex:0 0 auto;padding:12px 20px calc(12px + env(safe-area-inset-bottom));
+    border-top:1px solid var(--line);background:var(--white);
+  }
+  .btn{
+    width:100%;min-height:52px;border-radius:14px;border:1.5px solid transparent;
+    font-size:17px;font-weight:700;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    text-decoration:none;
+  }
+  .btn-primary{background:var(--green-600);color:#fff;}
+  .btn-primary:active{background:var(--green-700);}
+  .btn-secondary{background:var(--white);border-color:var(--green-600);color:var(--green-700);}
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, [tabindex]:focus-visible{
+    outline:3px solid #1d4ed8;outline-offset:2px;
+  }
+  .alert{
+    display:flex;gap:12px;align-items:flex-start;
+    background:var(--red-bg);border:1.5px solid var(--red-border);
+    border-left:6px solid var(--red-border);
+    border-radius:12px;padding:14px;margin-bottom:14px;color:var(--red-ink);
+  }
+  .alert .a-title{font-size:14.5px;font-weight:800;line-height:1.3;}
+  .alert .a-sub{font-size:12.5px;margin-top:4px;line-height:1.4;}
+  .alert .btn{min-height:44px;font-size:14px;margin-top:10px;background:#fff;border-color:var(--red-border);color:var(--red-ink);}
+  .section-h{display:flex;align-items:center;gap:8px;margin:6px 0 10px;font-size:14px;font-weight:800;color:var(--green-800);}
+  .list{border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:18px;}
+  .row{display:flex;align-items:center;gap:12px;padding:12px 14px;min-height:64px;border-bottom:1px solid var(--line);background:#fff;}
+  .row:last-child{border-bottom:0;}
+  .row .r-ico{width:36px;height:36px;border-radius:10px;background:#f3f4f6;display:flex;align-items:center;justify-content:center;color:#374151;flex:0 0 auto;}
+  .row .r-txt{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .row .r-t{font-size:14px;font-weight:700;}
+  .row .r-s{font-size:12px;color:var(--muted);white-space:nowrap;}
+  .row .pill{margin-left:auto;}
+  .panel{
+    border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-bottom:18px;
+  }
+  .panel-row{display:flex;align-items:center;justify-content:space-between;padding:14px;border-bottom:1px solid var(--line);}
+  .panel-row:last-child{border-bottom:0;}
+  .panel-row .p-label{font-size:13.5px;color:var(--muted);}
+  .panel-row .p-value{font-size:20px;font-weight:800;color:var(--green-800);}
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;
+    clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+  @media (max-width:900px){ .wrap{padding:20px;} }
+
+  /* Modo captura: abra com ?only=tela1, ?only=tela2 ou ?only=tela3 */
+  body.capture .wrap{padding:0;display:block;background:#fff;}
+  body.capture .frame{display:block;margin:0 !important;}
+  body.capture figcaption{display:none;}
+  body.capture .phone{border:0;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <!-- ============================== TELA 1 ============================== -->
+  <figure class="frame" style="margin:0">
+    <figcaption>Tela 1 — Entrada principal / menu inicial</figcaption>
+    <section class="phone" id="tela1" aria-label="Tela 1: entrada principal e menu inicial">
+      <header class="app-header">
+        <div class="logo" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22V12"/><path d="M12 12C12 7 8 5 4 5c0 5 3 7 8 7Z"/><path d="M12 12c0-4 3-6 8-6 0 5-4 6-8 6Z"/></svg>
+        </div>
+        <div>
+          <div class="brand-title">Instituto Sementes do Amanhã</div>
+          <div class="brand-sub">Gestão de doações e entregas</div>
+        </div>
+      </header>
+
+      <div class="session">
+        <span class="dot" aria-hidden="true"></span>
+        <span>Sessão iniciada · Perfil: Voluntário</span>
+        <a class="link" href="#tela1">Sair</a>
+      </div>
+
+      <main>
+        <h1>Olá, Mariana</h1>
+        <p class="lead">Registre as entregas do ciclo <strong>2026-11</strong>.</p>
+
+        <a class="card primary" href="#tela2">
+          <span class="card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+          </span>
+          <span class="card-text">
+            <span class="card-title">Registrar entrega</span>
+            <span class="card-sub">Cesta entregue no pátio, mesmo sem internet</span>
+          </span>
+          <span class="chev" aria-hidden="true">›</span>
+        </a>
+
+        <a class="card" href="#tela1">
+          <span class="card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6"/><path d="M22 11h-6"/></svg>
+          </span>
+          <span class="card-text">
+            <span class="card-title">Cadastrar família</span>
+            <span class="card-sub">Cadastro único com código FAM-0000</span>
+          </span>
+          <span class="chev" aria-hidden="true">›</span>
+        </a>
+
+        <a class="card" href="#tela3">
+          <span class="card-icon" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+          </span>
+          <span class="card-text">
+            <span class="card-title">Pendentes de sincronização</span>
+            <span class="card-sub">Registros salvos no aparelho</span>
+          </span>
+          <span class="pill amber" style="margin-left:auto">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            2
+          </span>
+        </a>
+
+        <p class="note">O painel e o relatório estão disponíveis apenas para a coordenação.</p>
+      </main>
+
+      <nav class="nav" aria-label="Navegação principal">
+        <a href="#tela1" aria-current="page">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+          Início
+        </a>
+        <a href="#tela3">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+          Pendentes
+        </a>
+        <a href="#tela1">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Sair
+        </a>
+      </nav>
+    </section>
+  </figure>
+
+  <!-- ============================== TELA 2 ============================== -->
+  <figure class="frame" style="margin:0">
+    <figcaption>Tela 2 — Execução da funcionalidade central (registro de entrega)</figcaption>
+    <section class="phone" id="tela2" aria-label="Tela 2: registro de entrega">
+      <header class="app-header">
+        <a class="back" href="#tela1" aria-label="Voltar ao menu inicial">‹</a>
+        <div class="screen-title">Registrar entrega</div>
+      </header>
+
+      <div class="banner" role="status" aria-live="polite">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:1px" aria-hidden="true"><path d="M1 1l22 22"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+        <div>
+          <strong>Sem conexão — salvo no aparelho</strong>
+          <span class="b-sub">A entrega será sincronizada automaticamente.</span>
+        </div>
+      </div>
+
+      <main style="padding-top:16px">
+        <div class="field">
+          <label for="familia">Família (código ou nome) <span class="req">· obrigatório</span></label>
+          <div class="search-row">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input id="familia" class="input" type="search" value="FAM-0042" aria-describedby="familia-resultado">
+          </div>
+          <div class="result" id="familia-resultado">
+            <div>
+              <div class="r-name">FAM-0042 · Maria S.</div>
+              <div class="r-meta">4 membros · Rua das Acácias, 120</div>
+            </div>
+            <span class="r-check" aria-label="Família encontrada">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="item">Item <span class="req">· obrigatório</span></label>
+          <select id="item" class="select">
+            <option selected>Cesta básica</option>
+            <option>Leite em pó</option>
+            <option>Arroz 5 kg</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="qtd">Quantidade <span class="req">· obrigatório</span></label>
+          <div class="stepper">
+            <button type="button" aria-label="Diminuir quantidade">−</button>
+            <span class="qty" id="qtd" role="status">1</span>
+            <button type="button" aria-label="Aumentar quantidade">+</button>
+          </div>
+        </div>
+
+        <p class="hint">Ciclo 2026-11 · Registro por Mariana A. (Voluntária)</p>
+      </main>
+
+      <div class="footer">
+        <button class="btn btn-primary" type="button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          Salvar entrega
+        </button>
+      </div>
+    </section>
+  </figure>
+
+  <!-- ============================== TELA 3 ============================== -->
+  <figure class="frame" style="margin:0">
+    <figcaption>Tela 3 — Alertas, listagem e resultados</figcaption>
+    <section class="phone" id="tela3" aria-label="Tela 3: alertas e resultados">
+      <header class="app-header">
+        <a class="back" href="#tela2" aria-label="Voltar ao registro de entrega">‹</a>
+        <div class="screen-title">Alertas e resultados</div>
+      </header>
+
+      <main>
+        <div class="alert" role="alert" tabindex="-1">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex:0 0 auto;margin-top:1px" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <div>
+            <div class="a-title">Esta família já recebeu cesta neste ciclo</div>
+            <div class="a-sub">FAM-0042 · Maria S. · entregue em 12/11/2026. O registro foi bloqueado.</div>
+            <button class="btn" type="button">Ver registro existente</button>
+          </div>
+        </div>
+
+        <div class="section-h">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+          Pendentes de sincronização (2)
+        </div>
+        <div class="list">
+          <div class="row">
+            <span class="r-ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+            </span>
+            <span class="r-txt">
+              <span class="r-t">FAM-0038 · Cesta básica</span>
+              <span class="r-s">1 unidade · 16/11/2026 · 09:42</span>
+            </span>
+            <span class="pill amber">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              Pendente
+            </span>
+          </div>
+          <div class="row">
+            <span class="r-ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+            </span>
+            <span class="r-txt">
+              <span class="r-t">FAM-0041 · Cesta básica</span>
+              <span class="r-s">1 unidade · 16/11/2026 · 09:40</span>
+            </span>
+            <span class="pill amber">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+              Pendente
+            </span>
+          </div>
+          <div class="row">
+            <span class="r-ico" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
+            </span>
+            <span class="r-txt">
+              <span class="r-t">FAM-0036 · Cesta básica</span>
+              <span class="r-s">1 unidade · 15/11/2026 · 16:08</span>
+            </span>
+            <span class="pill green">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+              Sincronizado
+            </span>
+          </div>
+        </div>
+
+        <div class="section-h">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          Resultados do ciclo 2026-11
+        </div>
+        <div class="panel">
+          <div class="panel-row">
+            <span class="p-label">Famílias atendidas</span>
+            <span class="p-value">178</span>
+          </div>
+          <div class="panel-row">
+            <span class="p-label">Cestas em estoque</span>
+            <span class="p-value">32</span>
+          </div>
+        </div>
+      </main>
+
+      <div class="footer">
+        <button class="btn btn-primary" type="button">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></svg>
+          Sincronizar agora
+        </button>
+      </div>
+    </section>
+  </figure>
+
+</div>
+
+<script>
+(function(){
+  var only = new URLSearchParams(location.search).get('only');
+  if(!only) return;
+  document.body.classList.add('capture');
+  document.querySelectorAll('.frame').forEach(function(f){
+    if(!f.querySelector('#' + only)) f.remove();
+  });
+})();
+</script>
+</body>
+</html>
