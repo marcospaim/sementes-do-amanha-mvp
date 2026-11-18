@@ -61,6 +61,16 @@ class AcessibilidadeTests(TestCase):
         css = (BASE_DIR / "static" / "css" / "app.css").read_text(encoding="utf-8")
         self.assertIn("min-height: 44px", css)
         self.assertIn("outline: 3px solid", css)
+        self.assertIn("[tabindex]:focus-visible", css)
+        self.assertIn("[hidden]", css)
+
+    def test_foco_no_alerta_de_erro(self):
+        self.client.force_login(self.user)
+        response = self.client.get("/familias/nova/")
+        self.assertContains(response, "js/acessibilidade.js")
+        script = (BASE_DIR / "static" / "js" / "acessibilidade.js").read_text(encoding="utf-8")
+        self.assertIn('getElementById("erro-formulario")', script)
+        self.assertIn("focus()", script)
 
     def test_estado_nao_depende_de_cor(self):
         item = Item.objects.create(nome="Cesta básica", unidade="cesta")
